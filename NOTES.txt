@@ -1,0 +1,25 @@
+Notes:
+======
+
+Ignore any external links
+Add a recursion depth max
+Listen to robots.txt
+
+Weight the results
+Factors:
+  - search term in URL
+  - search term in text
+  - results from POST search
+
+
+Resources:
+==========
+
+Wombat gem:
+https://github.com/felipecsl/wombat
+
+Spidr gem:
+https://github.com/postmodern/spidr
+
+Mechanize gem (for posting data):
+https://github.com/sparklemotion/mechanize
