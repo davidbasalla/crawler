@@ -1,44 +1,35 @@
 require 'rubygems'
-require 'nokogiri'
-require 'open-uri'
+require 'spidr'
+require 'robots'
 require 'pry'
 
 # FROM: http://ruby.bastardsbook.com/chapters/web-crawling/#h-2-2
-
 # 1.) Crawl link to link
 # 2.) Crawl by using search
 
-# TODO: 
-# - make it recursive
-#   - base case when no new links were added
-
 class Crawler
+  IGNORED_EXTENSIONS = ['js', 'css', 'pdf', 'png', 'ico', 'doc', 'docx', 'ppt']
+
   def initialize(root_url)
     @root_url = root_url
-    @links = []
+    @urls = []
     puts "Crawling #{root_url}"
   end
 
   def call
-    get_links_from_url(@root_url)
-    binding.pry
-  end
-  
-private 
-
-  def get_links_from_url(url)
-    page = Nokogiri::HTML(open(url))
-    link_elements = page.css('a')
-
-    links = []
-    link_elements.each do |link| 
-      link = link.attribute('href').to_s
-      if !link.empty? && link.start_with?('/') && !@links.include?(link)
-        links << link
+    Spidr.site(@root_url, 
+               robots: true,
+               ignore_exts: IGNORED_EXTENSIONS
+      ) do |spider|
+      spider.every_url do |url| 
+        puts url
+        @urls << url
       end
     end
 
-    @links.concat(links)
+    puts
+    puts "URLs:"
+    puts @urls
   end
 end
 
@@ -47,6 +38,7 @@ COUNCIL_PAGES = [
   "http://www.camden.gov.uk",
   "https://www.lambeth.gov.uk",
   "https://www.westminster.gov.uk",
+  "http://www.basildon.gov.uk/",
 ]
 
 Crawler.new(COUNCIL_PAGES.sample).call

@@ -12,6 +12,11 @@ Factors:
   - results from POST search
 
 
+An issue seems to be the sheer number of links on a given page. Eg Camden has 
+10000+ links on their website, it's taken hours to crawl (with spidr gem
+implementation). Not sure if it's possible to speed that up. Could run this as
+delayed scheduled job?
+
 Resources:
 ==========
 
